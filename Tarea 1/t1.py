@@ -11,12 +11,12 @@ def medir_tiempo(func):
         resultado = func(*args, **kwargs)
         fin = time.perf_counter()
         tiempo_ejecucion = fin - inicio
-        wrapper.tiempo_ejecucion = tiempo_ejecucion  # Guardar tiempo de ejecución en wrapper
+        wrapper.tiempo_ejecucion = tiempo_ejecucion  # Guardo tiempo de ejecución en wrapper
+        print(f"Tiempo de ejecución de {func.__name__}: {tiempo_ejecucion} segundos")
         return resultado
-    #wrapper.tiempo_ejecucion = 0  # Inicializamos el tiempo de ejecución
     return wrapper
 
-# Implementar clase
+# Implementar clase 
 class CaminosPCB:
     def __init__(self,N,M):
         self.N = N # Número de filas
@@ -36,11 +36,10 @@ class CaminosPCB:
             return self.dic[(i,j)]
         
         # Llamado recursivo: Sumar los caminos de la celda a la derecha y de la celda de abajo
-        caminos = self.Recursivo(i+1,j) + self.Recursivo(i,j+1)
-        self.dic[(i,j)] = caminos # Almacenar el número de caminos en el diccionario
+        self.dic[(i,j)] = self.Recursivo(i+1,j) + self.Recursivo(i,j+1) # Almacenar el número de caminos en el diccionario
 
         # Finalmente, retorno el número de caminos para llegar a la celda B
-        return caminos
+        return self.dic[(i,j)]
     
     def Iterativo(self):
         # Inicializar la primera fila y la primera columna con 1s. Puesto que solo hay un camino 
@@ -67,17 +66,18 @@ class CaminosPCB:
     
     @medir_tiempo
     # Método para seleccionar alguna de las 3 soluciones planteadas
-    def solve(self, solver="Combinatorial"): # Por defecto, uso la solución Combinatorial por ser la más eficiente
+    def solve(self, solver="Combinatorial"):
         if solver == "Recursivo":
-            return self.Recursivo()
+            self.resultado = self.Recursivo()
         elif solver == "Iterativo":
-            return self.Iterativo()
+            self.resultado = self.Iterativo()
         elif solver == "Combinatorial":
-            return self.Combinatorial()
+            self.resultado = self.Combinatorial()
         else:
             raise ValueError("Solución no reconocida. Usa 'Recursivo', 'Iterativo' o 'Combinatorial'")
+        return self.resultado  # Devuelve el número de caminos
         
-    def plot_results(self, results, title="Comparación de soluciones", xlabel="Tamaño de la grilla", ylabel="Tiempo de ejecución (s)"):
+    def plot_results(self, results, title="Comparación en Grillas Cuadradas", xlabel="Tamaño de la grilla (N*N)", ylabel="Tiempo de ejecución (s)"):
         # El diccionario results contiene los tiempos de ejecución y tamaños de grilla para cada método
         # Además, results será generado en el siguiente método plot_graph
         for method, data in results.items():
@@ -89,6 +89,7 @@ class CaminosPCB:
         plt.ylabel(ylabel)
         plt.legend()
         plt.grid(True)
+
         # Guardar la imagen en formato SVG
         output_dir = r"C:\Users\joaqu\Documents\Especialidad DIE\EL4203 Programación Avanzada\Tarea 1"
         output_path = os.path.join(output_dir, "plot_results.svg")
@@ -96,7 +97,8 @@ class CaminosPCB:
         plt.show()
 
     def plot_graph(self):
-        sizes = [(i,i) for i in range(1,7)] # Tamaños de grilla 1x1, 2x2, ...
+        # Por simplicidad, se graficarán los tiempos de ejecución para grillas cuadradas de tamaño 1x1, 2x2, ..., 6x6
+        sizes = [(i,i) for i in range(1,7)]
         solvers = ["Recursivo", "Iterativo", "Combinatorial"]
         results = {sol: {"sizes":[], "times":[]} for sol in solvers}
 
@@ -108,6 +110,28 @@ class CaminosPCB:
                 results[sol]["times"].append(self.solve.tiempo_ejecucion)
         self.plot_results(results)
 
-# Testing de la clase
-pcb = CaminosPCB(1, 1) 
-pcb.plot_graph()
+    def test1(self):
+        # Testing de la clase 1: Crear objeto y llamar a los métodos de solución 
+        caminos_recursivo = self.solve(solver="Recursivo")
+        print(f"Número de caminos (Recursivo): {caminos_recursivo}")
+
+        caminos_iterativo = self.solve(solver="Iterativo")
+        print(f"Número de caminos (Iterativo): {caminos_iterativo}")
+
+        caminos_combinatorial = self.solve(solver="Combinatorial")
+        print(f"Número de caminos (Combinatorial): {caminos_combinatorial}")
+
+    def test2(self):
+        # Testing de la clase 2: Gráficar tiempos de ejecución y comparar soluciones
+        self.plot_graph()
+
+
+
+# Probar test 1 con grilla 9x12 
+#pcb_1 = CaminosPCB(9,12) # Output: 75582
+#pcb_1.test1()
+
+# Probar test 2 con grilla 1x1. No importa realmente el tamaño de la grilla pcb_2, ya que se grafican los tiempos de ejecución
+# utilizando el método plot_graph, y éste reinicializa la grilla para cada tamaño dentro de sizes
+pcb_2 = CaminosPCB(6,6)
+pcb_2.test2()
