@@ -1,6 +1,7 @@
 import math
 import time
 from time import perf_counter
+import matplotlib.pyplot as plt
 
 # Implementar decorador para medir tiempo
 def medir_tiempo(func):
@@ -10,10 +11,8 @@ def medir_tiempo(func):
         fin = time.perf_counter()
         tiempo_ejecucion = fin - inicio
         wrapper.tiempo_ejecucion = tiempo_ejecucion  # Guardar tiempo de ejecución en wrapper
-        print(f"Tiempo de ejecución de {func.__name__}: {tiempo_ejecucion:.6f} segundos")
         return resultado
-    wrapper.tiempo_ejecucion = 0  # Inicializamos el tiempo de ejecución
-    wrapper.func = func  # Guardamos la referencia a la función original
+    #wrapper.tiempo_ejecucion = 0  # Inicializamos el tiempo de ejecución
     return wrapper
 
 # Implementar clase
@@ -76,3 +75,32 @@ class CaminosPCB:
             return self.Combinatorial()
         else:
             raise ValueError("Solución no reconocida. Usa 'Recursivo', 'Iterativo' o 'Combinatorial'")
+        
+    def plot_results(self, results, title="Comparación de soluciones", xlabel="Tamaño de la grilla", ylabel="Tiempo de ejecución (s)"):
+        # El diccionario results contiene los tiempos de ejecución y tamaños de grilla para cada método
+        # Además, results será generado en el siguiente método plot_graph
+        for method, data in results.items():
+            plt.plot(data['sizes'], data['times'], label=method)
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+
+    def plot_graph(self):
+        sizes = [(i,i) for i in range(1,10)] # Tamaños de grilla 1x1, 2x2, ..., 9x9
+        solvers = ["Recursivo", "Iterativo", "Combinatorial"]
+        results = {sol: {"sizes":[], "times":[]} for sol in solvers}
+
+        for N,M in sizes:
+            self.__init__(N, M)  # Reinicializamos para cada tamaño de grilla
+            for sol in solvers:
+                self.solve(solver=sol)
+                results[sol]["sizes"].append(N * M)
+                results[sol]["times"].append(self.solve.tiempo_ejecucion)
+        self.plot_results(results)
+
+# Testing de la clase
+pcb = CaminosPCB(1, 1) 
+pcb.plot_graph()
