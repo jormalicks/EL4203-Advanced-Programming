@@ -12,7 +12,7 @@ def medir_tiempo(func):
         tiempo_ejecucion = fin - inicio
         wrapper.tiempo_ejecucion = tiempo_ejecucion  # Guardar tiempo de ejecución en wrapper
         return resultado
-    #wrapper.tiempo_ejecucion = 0  # Inicializamos el tiempo de ejecución
+    wrapper.tiempo_ejecucion = 0  # Inicializamos el tiempo de ejecución
     return wrapper
 
 # Implementar clase
@@ -81,15 +81,18 @@ class CaminosPCB:
         # Además, results será generado en el siguiente método plot_graph
         for method, data in results.items():
             plt.plot(data['sizes'], data['times'], label=method)
+        
+        # Configuración de la gráfica
         plt.title(title)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         plt.legend()
         plt.grid(True)
+        plt.savefig("plot_results.svg", format="svg")   # Guardar gráfica en formato SVG
         plt.show()
 
     def plot_graph(self):
-        sizes = [(i,i) for i in range(1,10)] # Tamaños de grilla 1x1, 2x2, ..., 9x9
+        sizes = [(i,i) for i in range(1,7)] # Tamaños de grilla 1x1, 2x2, ...
         solvers = ["Recursivo", "Iterativo", "Combinatorial"]
         results = {sol: {"sizes":[], "times":[]} for sol in solvers}
 
