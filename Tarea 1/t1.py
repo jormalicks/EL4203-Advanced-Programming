@@ -1,3 +1,4 @@
+import os
 import math
 import time
 from time import perf_counter
@@ -12,7 +13,7 @@ def medir_tiempo(func):
         tiempo_ejecucion = fin - inicio
         wrapper.tiempo_ejecucion = tiempo_ejecucion  # Guardar tiempo de ejecución en wrapper
         return resultado
-    wrapper.tiempo_ejecucion = 0  # Inicializamos el tiempo de ejecución
+    #wrapper.tiempo_ejecucion = 0  # Inicializamos el tiempo de ejecución
     return wrapper
 
 # Implementar clase
@@ -88,7 +89,10 @@ class CaminosPCB:
         plt.ylabel(ylabel)
         plt.legend()
         plt.grid(True)
-        plt.savefig("plot_results.svg", format="svg")   # Guardar gráfica en formato SVG
+        # Guardar la imagen en formato SVG
+        output_dir = r"C:\Users\joaqu\Documents\Especialidad DIE\EL4203 Programación Avanzada\Tarea 1"
+        output_path = os.path.join(output_dir, "plot_results.svg")
+        plt.savefig(output_path, format="svg")
         plt.show()
 
     def plot_graph(self):
