@@ -66,7 +66,7 @@ class CaminosPCB:
     
     @medir_tiempo
     # Método para seleccionar alguna de las 3 soluciones planteadas
-    def solve(self, solver="Combinatorial"):
+    def solve(self, solver="Combinatorial"): # Por defecto, se selecciona la solución Combinatorial por ser más eficiente
         if solver == "Recursivo":
             self.resultado = self.Recursivo()
         elif solver == "Iterativo":
