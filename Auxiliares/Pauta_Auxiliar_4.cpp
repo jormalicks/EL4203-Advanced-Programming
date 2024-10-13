@@ -2,10 +2,17 @@
 using namespace std; // Para no tener que escribir std::cout, std::endl, etc.
 #include <clocale>
 
-/* Pauta:
- * 1. Crear un array de 2 elementos que contenga los valores máximos de cada fila de la matriz.
- * 2. Recorrer la matriz y actualizar los valores máximos de cada fila.
- * 3. Imprimir la matriz y el array de valores máximos.
+/**
+ * @file Pauta_Auxiliar_4.cpp
+ * @brief This program demonstrates how to find the maximum values in each row of a 2x4 matrix.
+ * 
+ * The program initializes a 2x4 matrix with predefined float values. It then iterates through each row
+ * to find the maximum value in that row and stores these maximum values in an array. Finally, it prints
+ * the original matrix and the array of maximum values.
+ * 
+ * The program also sets the locale to UTF-8 to handle Unicode characters in Windows.
+ * 
+ * @return int Returns 0 upon successful execution.
  */
 
 int main() {
@@ -23,7 +30,7 @@ int main() {
         valoresMaximos[i] = (int)matriz[i][0];
         for (int j = 0; j < 4; j++) {
             if (matriz[i][j] > valoresMaximos[i]) {
-                valoresMaximos[i] = (int)matriz[i][j];
+                valoresMaximos[i] = (int)matriz[i][j]; // Casting explícito a int
             }
         }
     }
