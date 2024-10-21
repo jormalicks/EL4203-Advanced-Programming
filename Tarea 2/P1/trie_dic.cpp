@@ -34,7 +34,7 @@ Trie::~Trie() {
     delete raiz;
 }
 
-
+// borrar_nodo_begin
 // borrar_nodo: Borrar nodo y todos sus hijos
 void Trie::borrar_nodo(TrieNode* nodo) {
     if (!nodo) return; // Si el nodo es nullptr, no hacer nada
@@ -51,6 +51,7 @@ void Trie::borrar_nodo(TrieNode* nodo) {
     }
     delete nodo;
 }
+// borrar_nodo_end
 
 // cmp_strings: Comparador de strings para ordenar lexicográficamente después con qsort
 // strcmp compara dos cadenas de carácteres (char*) y retorna un entero mayor, menor o igual a 0
@@ -63,6 +64,7 @@ void Trie::ordenar_traducciones(vector<char*>& traducciones) {
     qsort(&traducciones[0], traducciones.size(), sizeof(char*), cmp_strings);
 }
 
+// agregar_palabra_begin
 // agregar_palabra: Agregar palabra y su traducción al trie
 void Trie::agregar_palabra(const char* palabra, const char* traduccion) {
     TrieNode* nodo_actual = raiz; 
@@ -86,7 +88,10 @@ void Trie::agregar_palabra(const char* palabra, const char* traduccion) {
         cout << "Número máximo de traducciones alcanzado para la palabra" << endl;
     }
 }
+// agregar_palabra_end
 
+
+// buscar_palabra_begin
 // buscar_palabra: Buscar palabra en el trie
 string Trie::buscar_palabra(const char* palabra) {
     TrieNode* nodo_actual = raiz; // Comenzar en la raíz
@@ -114,3 +119,4 @@ string Trie::buscar_palabra(const char* palabra) {
     }
 
 }
+// buscar_palabra_end

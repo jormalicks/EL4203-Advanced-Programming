@@ -53,5 +53,6 @@ int main() {
     return 0;
 }
 
-// Compilar con: g++ main.cpp trie_dic.cpp -o trie_dic_program -> trie_dic_program.exe
+// Compilar con: g++ main.cpp trie_dic.cpp -o trie_dic_program 
+// -> trie_dic_program.exe
 // Ejecutar en terminal: ./trie_dic_program
